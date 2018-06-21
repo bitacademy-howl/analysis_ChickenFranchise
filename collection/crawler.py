@@ -16,7 +16,7 @@ def crawling(
         # proc = None,
         proc = lambda html:html,
         store = lambda html:html,
-        err=lambda e:print('%s : %s' % (e, datetime.now()), file=sys.stderr)):
+        err = lambda e:print('%s : %s' % (e, datetime.now()), file=sys.stderr)):
     try:
         request = Request(url)
         resp = urlopen(request)
@@ -29,9 +29,13 @@ def crawling(
 
         except UnicodeDecodeError as uE:
             result = receive.decode(encoding, 'replace')
+        # except AttributeError as aE:
+        #     result = receive.decode(encoding)
+
         # print(result)
         print('%s : Success for request [%s]' % (datetime.now(), url))
         return result
 
+    # except
     except Exception as e:
         err(e)

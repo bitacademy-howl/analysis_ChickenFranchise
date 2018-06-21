@@ -53,5 +53,5 @@ for aliasset in gungu_alias.split():
     s = aliasset.split(':')
     gungu_dict.update({s[0]: s[1]})
 
-print(gungu_dict)
+# print(gungu_dict)
 #gungu_dict = dict(aliasset.split(':') for aliasset in gungu_alias.split())
