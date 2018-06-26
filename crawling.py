@@ -236,7 +236,7 @@ def crawling_goobne(store=None):
 
 if __name__ == '__main__':
     # pelicana
-    # crawling_pelicana()
+    crawling_pelicana()
 
     # nene
     cw.crawling(
@@ -246,8 +246,8 @@ if __name__ == '__main__':
     )
 
     # # kyochon
-    # crawling_kyochon()
+    crawling_kyochon()
     #
     # # goobne
-    # crawling_goobne(store_goobne)
+    crawling_goobne(store_goobne)
 
