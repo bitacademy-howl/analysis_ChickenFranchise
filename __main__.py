@@ -24,15 +24,14 @@ RESULT_DIRECTORY = '__result__'
 def crawling_pelicana():
     results = []
     RESULT_DIRECTORY = '__result__'
-    # for page in count(start=1):
-    for page in range(1, 3):
-        url = 'http://pelicana.co.kr/store/stroe_search.html?gu=&si='
+    for page in count(start=1):
+    # for page in range(1, 3):
+        url = 'http://pelicana.co.kr/store/stroe_search.html?gu=&si=&page={0}'.format(page)
         html = cw.crawling(url=url)
         # print(html)
 
         bs = BeautifulSoup(html, 'html.parser')
         tag_table = bs.find('table', attrs={'class' : 'table mt20'})
-
         # print(bs, file=sys.stderr)
         # print(tag_table, file=sys.stderr)
 
@@ -62,6 +61,8 @@ def crawling_pelicana():
 
     # store
     table = pd.DataFrame(results, columns=['name', 'address', 'sido', 'gungu'])
+    table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
+    table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
     table.to_csv('{0}/pelicana_table.csv'.format(RESULT_DIRECTORY))
     # print(results)
 
@@ -73,8 +74,8 @@ def proc_nene(xml):
     results = []
     for element_item in element_items:
         name = element_item.findtext('aname1')
-        gungu = element_item.findtext('aname2')
-        sido = element_item.findtext('aname3')
+        gungu = element_item.findtext('aname3')
+        sido = element_item.findtext('aname2')
         address = element_item.findtext('aname5')
 
         results.append((name, address, sido, gungu))
@@ -84,6 +85,10 @@ def proc_nene(xml):
 def store_nene(data):
     # store
     table = pd.DataFrame(data, columns=['name', 'address', 'sido', 'gungu'])
+
+    table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
+    table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
+
     # print(table)
     table.to_csv('{0}/nene_table.csv'.format(RESULT_DIRECTORY))
 
@@ -138,6 +143,10 @@ def preprocessing_kyochon(response):
 def store_kyochon(data):
 
     table = pd.DataFrame(data, columns=['name', 'address', 'sido', 'gungu'])
+
+    table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
+    table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
+
     table.to_csv('{0}/kyochon_table.csv'.format(RESULT_DIRECTORY))
 
 def crawling_kyochon():
@@ -170,6 +179,7 @@ def crawling_kyochon():
 def store_goobne(data):
 
     table = pd.DataFrame(data, columns=['name', 'address', 'sido', 'gungu'])
+
     table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
     table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
 
@@ -235,8 +245,9 @@ if __name__ == '__main__':
         store = store_nene
     )
 
-    # kyochon
+    # # kyochon
     # crawling_kyochon()
-
+    #
+    # # goobne
     # crawling_goobne(store_goobne)
 
